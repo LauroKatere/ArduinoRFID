@@ -18,15 +18,16 @@ byte dataBlock[]    = {
         0xb5, 0x00, 0x00, 0x00  // 12, 13, 14, 15
     };
 
-int melody[16]={
-  
-  
+int melody[]={
+  NOTE_C5, NOTE_D5,NOTE_E5, NOTE_F5,
+  NOTE_G5, NOTE_A5, NOTE_B5, NOTE_C6,
+  NOTE_C5, NOTE_D5,NOTE_E5, NOTE_F5,
+  NOTE_G5, NOTE_A5, NOTE_B5, NOTE_C6
   };
 
 
 byte sector         = 13;
-byte blockAddr      = 54;
-byte blockAddr2     =53;
+byte blockAddr      = 53;
 byte trailerBlock   = 55;
 MFRC522::StatusCode status;
 byte buffer[18];
@@ -100,31 +101,32 @@ void loop() {
         return;
     }
     
-
+    
     
 
 
-   /* // Write melody to the block
-    Serial.print(F("Writing data into block ")); Serial.print(blockAddr2);
+   /*// Write melody to the block
+   melody_to_byte_array(melody);
+    Serial.print(F("Writing data into block ")); Serial.print(blockAddr);
     Serial.println(F(" ..."));
     dump_byte_array(dataBlock, 16); Serial.println();
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr2, dataBlock, 16);
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, 16);
     if (status != MFRC522::STATUS_OK) {
         Serial.print(F("MIFARE_Write() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
     }*/
 
      // Lesen der Daten vom Block
-    Serial.print(F("Reading data from block ")); Serial.print(blockAddr2);
+    Serial.print(F("Reading data from block ")); Serial.print(blockAddr);
     Serial.println(F(" ..."));
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr2, buffer, &size);
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr, buffer, &size);
     if (status != MFRC522::STATUS_OK) {
         Serial.print(F("MIFARE_Read() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
     }
 
 
-
+    byte_array_to_melody(buffer);
     
 
 
@@ -159,7 +161,7 @@ void dump_byte_array(byte *buffer, byte bufferSize) {
     }
 }
 
-void melody_to_byte_array(int melody[]){
+void melody_to_byte_array(int *melody){
   for(int x; x<16; x++){
 if(melody[x]==NOTE_B0){dataBlock[x]=0x01;}
 if(melody[x]==NOTE_C1){dataBlock[x]=0x02;}
