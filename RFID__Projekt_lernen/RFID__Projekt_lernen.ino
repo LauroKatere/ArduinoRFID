@@ -1,28 +1,39 @@
 #include <SPI.h>
 #include <MFRC522.h>
+#include <pitches.h>
 
 #define RST_PIN 9
 #define SS_PIN 10
 #define LED 4
+#define Buzzer 2 
+
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Erzeugen des MFRC522 Objekts
 
 MFRC522::MIFARE_Key key;
 
 byte dataBlock[]    = {
-        0x70, 0x68, 0x69, 0x6c, //  1,  2,   3,  4,
-        0x69, 0x70, 0x70, 0xff, //  5,  6,   7,  8,
-        0x00, 0x00, 0x00, 0x00, //  9, 10, 255, 11,
-        0x00, 0x00, 0x00, 0x00  // 12, 13, 14, 15
+        0xb3, 0xb3, 0x00, 0xb3, // b1 NOTE_C5, b2 NOTE_D5,  b3 NOTE_E5, b4 NOTE_F5,
+        0x00, 0xb8, 0xb3, 0x00, // b5 NOTE_G5, b6 NOTE_A5,  b7 NOTE_B5, b8 NOTE_C6,
+        0xb5, 0x00, 0x00, 0x00, //  9, 10, 255, 11,
+        0xb5, 0x00, 0x00, 0x00  // 12, 13, 14, 15
     };
+
+int melody[8];
 
 
 byte sector         = 13;
 byte blockAddr      = 54;
+byte blockAddr2     =53;
 byte trailerBlock   = 55;
 MFRC522::StatusCode status;
 byte buffer[18];
+byte buffer2[18];
 byte size = sizeof(buffer);
+byte size2 = sizeof(buffer2);
+int duration = 500;
+
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -102,18 +113,18 @@ void loop() {
     dump_byte_array(buffer, 16); Serial.println();
 
     if(buffer[9]==0xff){
-      dataBlock[8]= buffer[8]+0x01;
-      dataBlock[9]= 0x00;
+      buffer[8]= buffer[8]+0x01;
+      buffer[9]= 0x00;
       }
     else{
-      dataBlock[9]= buffer[9]+0x01;
+      buffer[9]= buffer[9]+0x01;
     }
 
     if(buffer[10]==0xff){
-    dataBlock[10]= 0xaa;
+    buffer[10]= 0xaa;
     }
     else{
-      dataBlock[10]= 0xff;
+      buffer[10]= 0xff;
       }
 
     if(buffer[10]==0xff){
@@ -132,7 +143,7 @@ void loop() {
     Serial.print(F("Writing data into block ")); Serial.print(blockAddr);
     Serial.println(F(" ..."));
     dump_byte_array(dataBlock, 16); Serial.println();
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, 16);
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, buffer, 16);
     if (status != MFRC522::STATUS_OK) {
         Serial.print(F("MIFARE_Write() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
@@ -156,7 +167,7 @@ void loop() {
     byte count = 0;
     for (byte i = 0; i < 16; i++) {
         // Compare buffer (= what we've read) with dataBlock (= what we've written)
-        if (buffer[i] == dataBlock[i])
+        if (buffer[i] == buffer[i])
             count++;
     }
     Serial.print(F("Number of bytes that match = ")); Serial.println(count);
@@ -172,6 +183,70 @@ void loop() {
     Serial.println(F("Current data in sector:"));
     mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
     Serial.println();
+
+   /* // Write melody to the block
+    Serial.print(F("Writing data into block ")); Serial.print(blockAddr2);
+    Serial.println(F(" ..."));
+    dump_byte_array(dataBlock, 16); Serial.println();
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr2, dataBlock, 16);
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("MIFARE_Write() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+    }*/
+
+     // Lesen der Daten vom Block
+    Serial.print(F("Reading data from block ")); Serial.print(blockAddr2);
+    Serial.println(F(" ..."));
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr2, buffer, &size);
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("MIFARE_Read() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+    }
+
+
+
+    for(int x; x<16; x++){
+      if(buffer[x]==0xb1){
+        melody[x]=NOTE_C5;
+        }
+        if(buffer[x]==0xb2){
+        melody[x]=NOTE_D5;
+        }
+        if(buffer[x]==0xb3){
+        melody[x]=NOTE_E5;
+        }
+        if(buffer[x]==0xb4){
+        melody[x]=NOTE_F5;
+        }
+        if(buffer[x]==0xb5){
+        melody[x]=NOTE_G5;
+        }
+        if(buffer[x]==0xb6){
+        melody[x]=NOTE_A5;
+        }
+        if(buffer[x]==0xb7){
+        melody[x]=NOTE_B5;
+        }
+        if(buffer[x]==0xb7){
+        melody[x]=NOTE_C6;
+        }
+        if(buffer[x]==0x00){
+          melody[x]==0;
+          }
+      }
+
+
+    for(int thisNote = 0; thisNote < 16; thisNote++){
+      if(!melody[thisNote]==0){
+      tone(Buzzer, melody[thisNote], duration);
+      }
+      delay(1000);
+      }
+
+
+    
+
+    
 
     // Halt PICC
     mfrc522.PICC_HaltA();
