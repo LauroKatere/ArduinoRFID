@@ -18,7 +18,10 @@ byte dataBlock[]    = {
         0xb5, 0x00, 0x00, 0x00  // 12, 13, 14, 15
     };
 
-int melody[8];
+int melody[16]={
+  
+  
+  };
 
 
 byte sector         = 13;
@@ -122,41 +125,11 @@ void loop() {
 
 
 
-    for(int x; x<16; x++){
-      if(buffer[x]==0xb1){
-        melody[x]=NOTE_C5;
-        }
-        if(buffer[x]==0xb2){
-        melody[x]=NOTE_D5;
-        }
-        if(buffer[x]==0xb3){
-        melody[x]=NOTE_E5;
-        }
-        if(buffer[x]==0xb4){
-        melody[x]=NOTE_F5;
-        }
-        if(buffer[x]==0xb5){
-        melody[x]=NOTE_G5;
-        }
-        if(buffer[x]==0xb6){
-        melody[x]=NOTE_A5;
-        }
-        if(buffer[x]==0xb7){
-        melody[x]=NOTE_B5;
-        }
-        if(buffer[x]==0xb7){
-        melody[x]=NOTE_C6;
-        }
-        if(buffer[x]==0x00){
-          melody[x]==0;
-          }
-      }
+    
 
 
     for(int thisNote = 0; thisNote < 16; thisNote++){
-      if(!melody[thisNote]==0){
       tone(Buzzer, melody[thisNote], duration);
-      }
       delay(1000);
       }
 
@@ -183,4 +156,203 @@ void dump_byte_array(byte *buffer, byte bufferSize) {
     for (byte i = 0; i < bufferSize; i++) {
         Serial.print(buffer[i] < 0x10 ? " 0" : " ");
         Serial.print(buffer[i], HEX);
-    }}
+    }
+}
+
+void melody_to_byte_array(int melody[]){
+  for(int x; x<16; x++){
+if(melody[x]==NOTE_B0){dataBlock[x]=0x01;}
+if(melody[x]==NOTE_C1){dataBlock[x]=0x02;}
+if(melody[x]==NOTE_CS1){dataBlock[x]=0x03;}
+if(melody[x]==NOTE_D1){dataBlock[x]=0x04;}
+if(melody[x]==NOTE_DS1){dataBlock[x]=0x05;}
+if(melody[x]==NOTE_E1){dataBlock[x]=0x06;}
+if(melody[x]==NOTE_F1){dataBlock[x]=0x07;}
+if(melody[x]==NOTE_FS1){dataBlock[x]=0x08;}
+if(melody[x]==NOTE_G1){dataBlock[x]=0x09;}
+if(melody[x]==NOTE_GS1){dataBlock[x]=0x0A;}
+if(melody[x]==NOTE_A1 ){dataBlock[x]=0x0B;}
+if(melody[x]==NOTE_AS1 ){dataBlock[x]=0x0C;}
+if(melody[x]==NOTE_B1  ){dataBlock[x]=0x0D;}
+if(melody[x]==NOTE_C2  ){dataBlock[x]=0x0E;}
+if(melody[x]==NOTE_CS2 ){dataBlock[x]=0x0F;}
+if(melody[x]==NOTE_D2  ){dataBlock[x]=0x10;}
+if(melody[x]==NOTE_DS2 ){dataBlock[x]=0x11;}
+if(melody[x]==NOTE_E2  ){dataBlock[x]=0x12;}
+if(melody[x]==NOTE_F2  ){dataBlock[x]=0x13;}
+if(melody[x]==NOTE_FS2 ){dataBlock[x]=0x14;}
+if(melody[x]==NOTE_G2  ){dataBlock[x]=0x15;}
+if(melody[x]==NOTE_GS2 ){dataBlock[x]=0x16;}
+if(melody[x]==NOTE_A2  ){dataBlock[x]=0x17;}
+if(melody[x]==NOTE_AS2 ){dataBlock[x]=0x18;}
+if(melody[x]==NOTE_B2  ){dataBlock[x]=0x19;}
+if(melody[x]==NOTE_C3  ){dataBlock[x]=0x1A;}
+if(melody[x]==NOTE_CS3 ){dataBlock[x]=0x1B;}
+if(melody[x]==NOTE_D3  ){dataBlock[x]=0x1C;}
+if(melody[x]==NOTE_DS3 ){dataBlock[x]=0x1D;}
+if(melody[x]==NOTE_E3  ){dataBlock[x]=0x1E;}
+if(melody[x]==NOTE_F3  ){dataBlock[x]=0x1F;}
+if(melody[x]==NOTE_FS3 ){dataBlock[x]=0x20;}
+if(melody[x]==NOTE_G3  ){dataBlock[x]=0x21;}
+if(melody[x]==NOTE_GS3 ){dataBlock[x]=0x22;}
+if(melody[x]==NOTE_A3  ){dataBlock[x]=0x23;}
+if(melody[x]==NOTE_AS3 ){dataBlock[x]=0x24;}
+if(melody[x]==NOTE_B3  ){dataBlock[x]=0x25;}
+if(melody[x]==NOTE_C4  ){dataBlock[x]=0x26;}
+if(melody[x]==NOTE_CS4 ){dataBlock[x]=0x27;}
+if(melody[x]==NOTE_D4  ){dataBlock[x]=0x28;}
+if(melody[x]==NOTE_DS4 ){dataBlock[x]=0x29;}
+if(melody[x]==NOTE_E4  ){dataBlock[x]=0x2A;}
+if(melody[x]==NOTE_F4  ){dataBlock[x]=0x2B;}
+if(melody[x]==NOTE_FS4 ){dataBlock[x]=0x2C;}
+if(melody[x]==NOTE_G4  ){dataBlock[x]=0x2D;}
+if(melody[x]==NOTE_GS4 ){dataBlock[x]=0x2E;}
+if(melody[x]==NOTE_A4  ){dataBlock[x]=0x2F;}
+if(melody[x]==NOTE_AS4 ){dataBlock[x]=0x30;}
+if(melody[x]==NOTE_B4  ){dataBlock[x]=0x31;}
+if(melody[x]==NOTE_C5  ){dataBlock[x]=0x32;}
+if(melody[x]==NOTE_CS5 ){dataBlock[x]=0x33;}
+if(melody[x]==NOTE_D5  ){dataBlock[x]=0x34;}
+if(melody[x]==NOTE_DS5 ){dataBlock[x]=0x35;}
+if(melody[x]==NOTE_E5  ){dataBlock[x]=0x36;}
+if(melody[x]==NOTE_F5  ){dataBlock[x]=0x37;}
+if(melody[x]==NOTE_FS5 ){dataBlock[x]=0x38;}
+if(melody[x]==NOTE_G5  ){dataBlock[x]=0x39;}
+if(melody[x]==NOTE_GS5 ){dataBlock[x]=0x3A;}
+if(melody[x]==NOTE_A5  ){dataBlock[x]=0x3B;}
+if(melody[x]==NOTE_AS5 ){dataBlock[x]=0x3C;}
+if(melody[x]==NOTE_B5  ){dataBlock[x]=0x3D;}
+if(melody[x]==NOTE_C6  ){dataBlock[x]=0x3E;}
+if(melody[x]==NOTE_CS6 ){dataBlock[x]=0x3F;}
+if(melody[x]==NOTE_D6  ){dataBlock[x]=0x40;}
+if(melody[x]==NOTE_DS6 ){dataBlock[x]=0x41;}
+if(melody[x]==NOTE_E6  ){dataBlock[x]=0x42;}
+if(melody[x]==NOTE_F6  ){dataBlock[x]=0x43;}
+if(melody[x]==NOTE_FS6 ){dataBlock[x]=0x44;}
+if(melody[x]==NOTE_G6  ){dataBlock[x]=0x45;}
+if(melody[x]==NOTE_GS6 ){dataBlock[x]=0x46;}
+if(melody[x]==NOTE_A6  ){dataBlock[x]=0x47;}
+if(melody[x]==NOTE_AS6 ){dataBlock[x]=0x48;}
+if(melody[x]==NOTE_B6){dataBlock[x]=0x49;}
+if(melody[x]==NOTE_C7 ){dataBlock[x]=0x4A;}
+if(melody[x]==NOTE_CS7 ){dataBlock[x]=0x4B;}
+if(melody[x]==NOTE_D7  ){dataBlock[x]=0x4C;}
+if(melody[x]==NOTE_DS7 ){dataBlock[x]=0x4D;}
+if(melody[x]==NOTE_E7  ){dataBlock[x]=0x4E;}
+if(melody[x]==NOTE_F7  ){dataBlock[x]=0x4F;}
+if(melody[x]==NOTE_FS7 ){dataBlock[x]=0x50;}
+if(melody[x]==NOTE_G7  ){dataBlock[x]=0x51;}
+if(melody[x]==NOTE_GS7 ){dataBlock[x]=0x52;}
+if(melody[x]==NOTE_A7  ){dataBlock[x]=0x53;}
+if(melody[x]==NOTE_AS7 ){dataBlock[x]=0x54;}
+if(melody[x]==NOTE_B7  ){dataBlock[x]=0x55;}
+if(melody[x]==NOTE_C8  ){dataBlock[x]=0x56;}
+if(melody[x]==NOTE_CS8 ){dataBlock[x]=0x57;}
+if(melody[x]==NOTE_D8  ){dataBlock[x]=0x58;}
+if(melody[x]==NOTE_DS8 ){dataBlock[x]=0x59;}
+    }
+  }
+void byte_array_to_melody(byte *buffer){
+      for(int x; x<16; x++){
+if(buffer[x]==0x01){melody[x]=NOTE_B0;}
+if(buffer[x]==0x02){melody[x]=NOTE_C1;}
+if(buffer[x]==0x03){melody[x]=NOTE_CS1;}
+if(buffer[x]==0x04){melody[x]=NOTE_D1;}
+if(buffer[x]==0x05){melody[x]=NOTE_DS1;}
+if(buffer[x]==0x06){melody[x]=NOTE_E1;}
+if(buffer[x]==0x07){melody[x]=NOTE_F1;}
+if(buffer[x]==0x08){melody[x]= NOTE_FS1;}
+if(buffer[x]==0x09){melody[x]= NOTE_G1;}
+if(buffer[x]==0x0A){melody[x]= NOTE_GS1;}
+if(buffer[x]==0x0B){melody[x]= NOTE_A1 ;}
+if(buffer[x]==0x0C){melody[x]= NOTE_AS1 ;}
+if(buffer[x]==0x0D){melody[x]= NOTE_B1  ;}
+if(buffer[x]==0x0E){melody[x]= NOTE_C2  ;}
+if(buffer[x]==0x0F){melody[x]= NOTE_CS2 ;}
+if(buffer[x]==0x10){melody[x]= NOTE_D2  ;}
+if(buffer[x]==0x11){melody[x]= NOTE_DS2 ;}
+if(buffer[x]==0x12){melody[x]= NOTE_E2  ;}
+if(buffer[x]==0x13){melody[x]= NOTE_F2  ;}
+if(buffer[x]==0x14){melody[x]= NOTE_FS2 ;}
+if(buffer[x]==0x15){melody[x]= NOTE_G2  ;}
+if(buffer[x]==0x16){melody[x]= NOTE_GS2 ;}
+if(buffer[x]==0x17){melody[x]= NOTE_A2  ;}
+if(buffer[x]==0x18){melody[x]= NOTE_AS2 ;}
+if(buffer[x]==0x19){melody[x]= NOTE_B2  ;}
+if(buffer[x]==0x1A){melody[x]= NOTE_C3  ;}
+if(buffer[x]==0x1B){melody[x]= NOTE_CS3 ;}
+if(buffer[x]==0x1C){melody[x]= NOTE_D3  ;}
+if(buffer[x]==0x1D){melody[x]= NOTE_DS3 ;}
+if(buffer[x]==0x1E){melody[x]= NOTE_E3  ;}
+if(buffer[x]==0x1F){melody[x]= NOTE_F3  ;}
+if(buffer[x]==0x20){melody[x]= NOTE_FS3 ;}
+if(buffer[x]==0x21){melody[x]= NOTE_G3  ;}
+if(buffer[x]==0x22){melody[x]= NOTE_GS3 ;}
+if(buffer[x]==0x23){melody[x]= NOTE_A3  ;}
+if(buffer[x]==0x24){melody[x]= NOTE_AS3 ;}
+if(buffer[x]==0x25){melody[x]= NOTE_B3  ;}
+if(buffer[x]==0x26){melody[x]= NOTE_C4  ;}
+if(buffer[x]==0x27){melody[x]= NOTE_CS4 ;}
+if(buffer[x]==0x28){melody[x]= NOTE_D4  ;}
+if(buffer[x]==0x29){melody[x]= NOTE_DS4 ;}
+if(buffer[x]==0x2A){melody[x]= NOTE_E4  ;}
+if(buffer[x]==0x2B){melody[x]= NOTE_F4  ;}
+if(buffer[x]==0x2C){melody[x]= NOTE_FS4 ;}
+if(buffer[x]==0x2D){melody[x]= NOTE_G4  ;}
+if(buffer[x]==0x2E){melody[x]= NOTE_GS4 ;}
+if(buffer[x]==0x2F){melody[x]= NOTE_A4  ;}
+if(buffer[x]==0x30){melody[x]= NOTE_AS4 ;}
+if(buffer[x]==0x31){melody[x]= NOTE_B4  ;}
+if(buffer[x]==0x32){melody[x]= NOTE_C5  ;}
+if(buffer[x]==0x33){melody[x]= NOTE_CS5 ;}
+if(buffer[x]==0x34){melody[x]= NOTE_D5  ;}
+if(buffer[x]==0x35){melody[x]= NOTE_DS5 ;}
+if(buffer[x]==0x36){melody[x]= NOTE_E5  ;}
+if(buffer[x]==0x37){melody[x]= NOTE_F5  ;}
+if(buffer[x]==0x38){melody[x]= NOTE_FS5 ;}
+if(buffer[x]==0x39){melody[x]= NOTE_G5  ;}
+if(buffer[x]==0x3A){melody[x]= NOTE_GS5 ;}
+if(buffer[x]==0x3B){melody[x]= NOTE_A5  ;}
+if(buffer[x]==0x3C){melody[x]= NOTE_AS5 ;}
+if(buffer[x]==0x3D){melody[x]= NOTE_B5  ;}
+if(buffer[x]==0x3E){melody[x]= NOTE_C6  ;}
+if(buffer[x]==0x3F){melody[x]= NOTE_CS6 ;}
+if(buffer[x]==0x40){melody[x]= NOTE_D6  ;}
+if(buffer[x]==0x41){melody[x]= NOTE_DS6 ;}
+if(buffer[x]==0x42){melody[x]= NOTE_E6  ;}
+if(buffer[x]==0x43){melody[x]= NOTE_F6  ;}
+if(buffer[x]==0x44){melody[x]= NOTE_FS6 ;}
+if(buffer[x]==0x45){melody[x]= NOTE_G6  ;}
+if(buffer[x]==0x46){melody[x]= NOTE_GS6 ;}
+if(buffer[x]==0x47){melody[x]= NOTE_A6  ;}
+if(buffer[x]==0x48){melody[x]= NOTE_AS6 ;}
+if(buffer[x]==0x49){melody[x]=NOTE_B6;}
+if(buffer[x]==0x4A){melody[x]= NOTE_C7 ;}
+if(buffer[x]==0x4B){melody[x]= NOTE_CS7 ;}
+if(buffer[x]==0x4C){melody[x]= NOTE_D7  ;}
+if(buffer[x]==0x4D){melody[x]= NOTE_DS7 ;}
+if(buffer[x]==0x4E){melody[x]= NOTE_E7  ;}
+if(buffer[x]==0x4F){melody[x]= NOTE_F7  ;}
+if(buffer[x]==0x50){melody[x]= NOTE_FS7 ;}
+if(buffer[x]==0x51){melody[x]= NOTE_G7  ;}
+if(buffer[x]==0x52){melody[x]= NOTE_GS7 ;}
+if(buffer[x]==0x53){melody[x]= NOTE_A7  ;}
+if(buffer[x]==0x54){melody[x]= NOTE_AS7 ;}
+if(buffer[x]==0x55){melody[x]= NOTE_B7  ;}
+if(buffer[x]==0x56){melody[x]= NOTE_C8  ;}
+if(buffer[x]==0x57){melody[x]= NOTE_CS8 ;}
+if(buffer[x]==0x58){melody[x]= NOTE_D8  ;}
+if(buffer[x]==0x59){melody[x]= NOTE_DS8 ;}
+
+
+               }
+      }
+
+  
+
+    
+    
+    
+    
+    
+    
