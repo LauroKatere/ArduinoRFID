@@ -154,6 +154,43 @@ void loop() {
     }
 
 
+void write_to_card(byte blockaddress, byte trailer, int sectorcount){
+  for(int count=0; count<sectorcount; count++){
+
+    for(int x= 0; x<3; x++){
+      
+      // Authenticate using key B
+    Serial.println(F("Authenticating again using key B..."));
+    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailer, &key, &(mfrc522.uid));
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("PCD_Authenticate() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+    }
+    
+    
+   // Write melody to the block
+   melody_to_byte_array(melody);
+    Serial.print(F("Writing data into block ")); Serial.print(blockaddress);
+    Serial.println(F(" ..."));
+    dump_byte_array(dataBlock, 16); Serial.println();
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockaddress, dataBlock, 16);
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("MIFARE_Write() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+    }
+      blockaddress= blockaddress +1;
+      
+      }
+      blockAddr= blockAddr+1;
+      trailer= trailerBlock+4;
+    
+    
+    }
+  
+  }
+
+
 void dump_byte_array(byte *buffer, byte bufferSize) {
     for (byte i = 0; i < bufferSize; i++) {
         Serial.print(buffer[i] < 0x10 ? " 0" : " ");
