@@ -12,10 +12,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN); // Erzeugen des MFRC522 Objekts
 MFRC522::MIFARE_Key key;
 
 byte dataBlock[]    = {
-        0xb3, 0xb3, 0x00, 0xb3, // b1 NOTE_C5, b2 NOTE_D5,  b3 NOTE_E5, b4 NOTE_F5,
-        0x00, 0xb8, 0xb3, 0x00, // b5 NOTE_G5, b6 NOTE_A5,  b7 NOTE_B5, b8 NOTE_C6,
-        0xb5, 0x00, 0x00, 0x00, //  9, 10, 255, 11,
-        0xb5, 0x00, 0x00, 0x00  // 12, 13, 14, 15 testing if branch works
+        0x00, 0x00, 0x00, 0x00, // b1 NOTE_C5, b2 NOTE_D5,  b3 NOTE_E5, b4 NOTE_F5,
+        0x00, 0xb8, 0xbff, 0x07, // b5 NOTE_G5, b6 NOTE_A5,  b7 NOTE_B5, b8 NOTE_C6,
+        0x80, 0x69, 0xff, 0xff, //  9, 10, 255, 11,
+        0xff, 0xff, 0xff, 0xff  // 12, 13, 14, 15 testing if branch works
     };
 
 int melody[]={
@@ -137,7 +137,7 @@ void loop() {
 
 
     
-
+    write_to_card(12,15,2);
     
 
     // Halt PICC
@@ -160,7 +160,7 @@ void write_to_card(byte blockaddress, byte trailer, int sectorcount){
     for(int x= 0; x<3; x++){
       
       // Authenticate using key B
-    Serial.println(F("Authenticating again using key B..."));
+    Serial.println(F("Authenticating using key B..."));
     status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailer, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK) {
         Serial.print(F("PCD_Authenticate() failed: "));
@@ -170,7 +170,6 @@ void write_to_card(byte blockaddress, byte trailer, int sectorcount){
     
     
    // Write melody to the block
-   melody_to_byte_array(melody);
     Serial.print(F("Writing data into block ")); Serial.print(blockaddress);
     Serial.println(F(" ..."));
     dump_byte_array(dataBlock, 16); Serial.println();
@@ -182,12 +181,12 @@ void write_to_card(byte blockaddress, byte trailer, int sectorcount){
       blockaddress= blockaddress +1;
       
       }
-      blockAddr= blockAddr+1;
-      trailer= trailerBlock+4;
+      blockaddress= blockaddress+1;
+      trailer= trailer+4;
     
     
     }
-  
+  Serial.print("Write successfull");
   }
 
 
